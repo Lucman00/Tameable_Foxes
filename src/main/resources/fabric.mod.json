@@ -27,6 +27,7 @@
 	},
 	"mixins": [
 		"tameable_foxes.mixins.json",
+		"tameable_foxes.entity.mixins.json",
 		{
 			"config": "tameable_foxes.client.mixins.json",
 			"environment": "client"

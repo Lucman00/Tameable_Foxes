@@ -1,6 +1,6 @@
 package com.tameable_foxes.mixin;
 
-import com.tameable_foxes.entity.EntityAccessor;
+import com.tameable_foxes.entity.Accessor.EntityAccessor;
 import com.tameable_foxes.entity.TameableFox;
 
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -30,8 +30,6 @@ public abstract class TameableFoxesMixin implements TameableFox {
 	private static final EntityDataAccessor<Optional<EntityReference<LivingEntity>>> FOX_OWNER =
 			SynchedEntityData.defineId(Fox.class, EntityDataSerializers.OPTIONAL_LIVING_ENTITY_REFERENCE);
 
-	SynchedEntityData entityData =((EntityAccessor)(Object)this).getEntityDataAccessor();
-
 	@Inject(method = "defineSynchedData", at = @At("TAIL"))
 	private void injectTameData(SynchedEntityData.Builder builder, CallbackInfo ci){
 		builder.define(FOX_TAME_FLAGS, (byte) 0);
@@ -43,11 +41,12 @@ public abstract class TameableFoxesMixin implements TameableFox {
 		return (((EntityAccessor)(Object)this).getEntityDataAccessor().get(FOX_TAME_FLAGS) & 4) != 0;
 	}
 	public void setTame(boolean tamed){
-		byte current = ((EntityAccessor)(Object)this).getEntityDataAccessor().get(FOX_TAME_FLAGS);
+		SynchedEntityData data = ((EntityAccessor)(Object)this).getEntityDataAccessor();
+		byte current =  data.get(FOX_TAME_FLAGS);
 		if (tamed) {
-			this.entityData.set(FOX_TAME_FLAGS, (byte) (current | 4) );
+			data.set(FOX_TAME_FLAGS, (byte) (current | 4) );
 		} else {
-			this.entityData.set(FOX_TAME_FLAGS, (byte) (current & -5) );
+			data.set(FOX_TAME_FLAGS, (byte) (current & -5) );
 		}
 	}
 
@@ -56,8 +55,9 @@ public abstract class TameableFoxesMixin implements TameableFox {
 		return ((EntityAccessor)(Object)this).getEntityDataAccessor().get(FOX_OWNER).orElse(null);
 	}
 	public void setOwner(@Nullable LivingEntity owner){
-		this.entityData.set(FOX_OWNER, Optional.ofNullable(owner).map(EntityReference::of));
-	}
+		((EntityAccessor)(Object)this).getEntityDataAccessor()
+				.set(FOX_OWNER, Optional.ofNullable(owner).map(EntityReference::of));}
+
 
 	@Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
 	private void saveTameData(ValueOutput output, CallbackInfo ci){
@@ -69,14 +69,15 @@ public abstract class TameableFoxesMixin implements TameableFox {
 	@Inject(method="readAdditionalSaveData", at = @At("TAIL"))
 
 	private void loadTameData(ValueInput input, CallbackInfo ci){
+		SynchedEntityData data = ((EntityAccessor)(Object)this).getEntityDataAccessor();
 		EntityReference<LivingEntity> owner = EntityReference.readWithOldOwnerConversion(
 				input, "FoxOwner", ((Fox) (Object)this).level()
 		);
 		if (owner != null){
-			this.entityData.set(FOX_OWNER, Optional.of(owner));
+			data.set(FOX_OWNER, Optional.of(owner));
 			this.setTame(true);
 		}else {
-			this.entityData.set(FOX_OWNER, Optional.empty());
+			data.set(FOX_OWNER, Optional.empty());
 			this.setTame(false);
 		}
 	}

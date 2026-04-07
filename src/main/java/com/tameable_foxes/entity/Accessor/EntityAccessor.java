@@ -1,4 +1,4 @@
-package com.tameable_foxes.entity;
+package com.tameable_foxes.entity.Accessor;
 
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
