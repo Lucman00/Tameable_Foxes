@@ -3,7 +3,8 @@
 	"package": "com.tameable_foxes.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"mixins": [
-		"ExampleMixin"
+		"TameableFoxesMixin",
+		"TameableMobMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
