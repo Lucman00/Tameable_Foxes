@@ -24,12 +24,14 @@ public abstract class TameableMobMixin {
             ItemStack heldItem = player.getItemInHand(hand);
 
             if (heldItem.is(Items.BAMBOO) && !tameableFox.isTame()) {
-                if (!fox.level().isClientSide()) {
-                    tameableFox.setOwner(player);
-                    tameableFox.setTame(true);
-                }
                 if (!player.getAbilities().instabuild) {
                     heldItem.shrink(1);
+                }
+                if (!fox.level().isClientSide()) {
+                    if (fox.level().getRandom().nextFloat() < 0.15f) {
+                        tameableFox.setOwner(player);
+                        tameableFox.setTame(true);
+                    }
                 }
                 cir.setReturnValue(InteractionResult.SUCCESS);
             }
