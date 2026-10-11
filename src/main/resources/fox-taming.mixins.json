@@ -1,0 +1,14 @@
+{
+	"required": true,
+	"package": "com.foxtaming.lc.mixin",
+	"compatibilityLevel": "JAVA_25",
+	"mixins": [
+		"FoxMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
+}
