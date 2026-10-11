@@ -6,7 +6,6 @@ import com.foxtaming.lc.SleepOnOwnerBedGoal;
 import com.foxtaming.lc.TameableFox;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.UUIDUtil;
-import net.minecraft.world.attribute.modifier.BooleanModifier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
@@ -39,7 +38,7 @@ public abstract class FoxMixin extends Animal implements TameableFox {
     @Unique private boolean     fox_taming$sitting;
 
     @Shadow protected abstract void setSleeping(boolean sleeping);
-    @Shadow abstract void setSitting(boolean sitting);
+    @Shadow public abstract void setSitting(boolean value);
 
 
 
