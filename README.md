@@ -1,12 +1,12 @@
 # Tameable_Foxes
 - Makes Foxes in Minecraft tameable. Mod in Fabric 26.1.1
 ----
-### Finished
+### Full release 
 ----
 
 
 ## To-Do:
-- Nothing :D
+- Possible, more reactive, custom animations planned
 
 ## Finished
 
